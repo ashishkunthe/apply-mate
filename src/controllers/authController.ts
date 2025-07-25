@@ -3,6 +3,10 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+interface RequestExtended extends Request {
+  userId: string;
+}
+
 export async function Registration(req: Request, res: Response) {
   const { userName, email, password } = req.body;
 
@@ -40,7 +44,7 @@ export async function Registration(req: Request, res: Response) {
   }
 }
 
-export default async function Login(req: Request, res: Response) {
+export async function Login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   try {
@@ -73,6 +77,33 @@ export default async function Login(req: Request, res: Response) {
     console.log("Error logging in");
     res.status(500).json({
       message: "Error logging in ",
+    });
+  }
+}
+
+export async function UserDetails(req: RequestExtended, res: Response) {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const { userName, email } = user;
+
+    res.status(200).json({
+      message: "User Details",
+      username: userName,
+      email: email,
+    });
+  } catch (error) {
+    console.log("Failed to fetch the user details");
+    res.status(500).json({
+      message: "Failed to fetch details",
     });
   }
 }
