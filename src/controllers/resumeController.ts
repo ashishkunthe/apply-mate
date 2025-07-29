@@ -7,7 +7,7 @@ interface ExtendedRequest extends Request {
 
 export async function uploadResume(req: ExtendedRequest, res: Response) {
   const userId = req.userId;
-  const fileUrl = req.file?.path;
+  const fileUrl = req.file?.path.replace(/\\/g, "/");
   const { tag } = req.body;
 
   try {

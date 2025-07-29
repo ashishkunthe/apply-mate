@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const jobApplicationSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  platform: { type: String, enum: ["LinkedIn", "Indeed"], required: true },
+  platform: {
+    type: String,
+    enum: ["LinkedIn", "Indeed", "Amazon Jobs"],
+    required: true,
+  },
   jobTitle: { type: String },
   company: { type: String },
   jobLink: { type: String },
@@ -10,8 +14,8 @@ const jobApplicationSchema = new mongoose.Schema({
   appliedAt: { type: Date, default: Date.now },
   status: {
     type: String,
-    enum: ["Applied", "Rejected", "Interview"],
-    default: "Applied",
+    enum: ["Pending", "Failed", "Applied"],
+    default: "Pending",
   },
 });
 

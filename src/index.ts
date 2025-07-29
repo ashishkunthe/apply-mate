@@ -4,6 +4,8 @@ import connectDB from "./config/db";
 import cors from "cors";
 import authRoutes from "./routes/auth";
 import resumeRoutes from "./routes/resume";
+import jobRoutes from "./routes/jobapply";
+import "./scheduler/cron";
 
 dotenv.config();
 
@@ -14,6 +16,7 @@ app.use(cors());
 
 app.use("/api", authRoutes);
 app.use("/api", resumeRoutes);
+app.use("/api", jobRoutes);
 
 app.get("/", (req, res) => {
   res.send("hello");
