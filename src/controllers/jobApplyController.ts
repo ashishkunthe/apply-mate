@@ -32,3 +32,30 @@ export async function JobApply(req: ExtendedRequest, res: Response) {
     });
   }
 }
+
+export async function JobApplicationStatus(
+  req: ExtendedRequest,
+  res: Response
+) {
+  const userId = req.userId;
+
+  try {
+    const jobApplications = await JobApplication.find({ userId: userId });
+
+    if (jobApplications.length === 0) {
+      return res.status(404).json({
+        message: "there are no jobs you scheduled",
+      });
+    }
+
+    res.status(200).json({
+      message: "Here is the application status",
+      applications: jobApplications,
+    });
+  } catch (error) {
+    console.log("Error Fetching the status", error);
+    res.status(500).json({
+      message: "Error fetching the job status",
+    });
+  }
+}
